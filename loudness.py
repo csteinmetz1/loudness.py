@@ -1,3 +1,8 @@
+import numpy as np
+import matplotlib.pyplot as plt # plots
+import copy # edit in place
+from scipy.signal import lfilter
+
 def calculate_loudness(signal,fs, G = [1.0, 1.0, 1.0, 1.41, 1.41]):
     # filter
     if len(signal.shape)==1: # if shape (N,), then make (N,1)
@@ -15,7 +20,7 @@ def calculate_loudness(signal,fs, G = [1.0, 1.0, 1.0, 1.41, 1.41]):
     step = 1 - overlap
 
     T = signal_filtered.shape[0]/fs # length of measurement interval in seconds
-    j_range = np.arange(0,(T-T_g)/(T_g*step))
+    j_range = np.arange(0,(T-T_g)/(T_g*step)).astype('int')
     z = np.ndarray(shape=(signal_filtered.shape[1],len(j_range)))
     # write in explicit for-loops for readability and translatability
     for i in range(signal_filtered.shape[1]): # for each channel i
